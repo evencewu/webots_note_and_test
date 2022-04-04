@@ -1,0 +1,120 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+  CFM 1e-08
+}
+Viewpoint {
+  orientation -0.19500645681245574 -0.9644782726950913 -0.17819692281446667 1.5504339358498995
+  position -6.657147640373091 3.282172011565008 -0.7292759613497145
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 100 100
+}
+Robot {
+  translation 1.88292e-07 0.187739 0.0273197
+  rotation 0.26470003707322803 -0.9272911298740865 0.26469803707294787 -1.6462153071795864
+  children [
+    DEF accelerometer Accelerometer {
+      name "ACCELEROMETER"
+    }
+    DEF compass Compass {
+      name "COMPASS"
+    }
+    DEF GYRO Gyro {
+      name "GYRO"
+    }
+    DEF IMU InertialUnit {
+      name "IMU"
+    }
+    DEF MOTOR1 HingeJoint {
+      jointParameters HingeJointParameters {
+        position -5.453140635723079
+        axis 0 0 1
+        anchor 0 -0.1 0.07
+      }
+      device [
+        PositionSensor {
+          name "POS1"
+        }
+        DEF MOTOR1 RotationalMotor {
+          name "MOTOR1"
+          maxVelocity 100
+          maxTorque 100
+        }
+      ]
+      endPoint DEF WHEEL1 Solid {
+        translation 4.043004285453048e-05 -0.09996536906853552 0.06999999999900207
+        rotation 0.6621283158253347 0.529900066788406 0.5298981153013745 1.971887897284384
+        children [
+          DEF WHEEL1 Shape {
+            appearance PBRAppearance {
+            }
+            geometry Cylinder {
+              height 0.03
+              radius 0.1
+            }
+          }
+        ]
+        name "WHEEL1"
+        boundingObject USE WHEEL1
+        physics Physics {
+          density -1
+          mass 0.01
+        }
+      }
+    }
+    DEF MOTOR2 HingeJoint {
+      jointParameters HingeJointParameters {
+        position -5.453139575454807
+        axis 0 0 1
+        anchor 0 -0.1 -0.07
+      }
+      device [
+        PositionSensor {
+          name "POS2"
+        }
+        DEF MOTOR2 RotationalMotor {
+          name "MOTOR2"
+          maxVelocity 100
+          maxTorque 100
+        }
+      ]
+      endPoint DEF WHEEL2 Solid {
+        translation 6.740940036733507e-05 -0.09997069532993452 -0.06999999999537941
+        rotation 0.7592925117887399 0.46015180318681803 0.4601469325829155 1.8427550824043697
+        children [
+          DEF WHEEL1 Shape {
+            appearance PBRAppearance {
+            }
+            geometry Cylinder {
+              height 0.03
+              radius 0.1
+            }
+          }
+        ]
+        name "wheel2"
+        boundingObject USE WHEEL1
+        physics Physics {
+          density -1
+          mass 0.01
+        }
+      }
+    }
+    DEF BODE Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 0.1 0.2 0.1
+      }
+    }
+  ]
+  boundingObject USE BODE
+  physics Physics {
+    density -1
+    mass 1
+  }
+  controller "key_pid_control"
+}
