@@ -1,5 +1,3 @@
-//机器参数质心离轴0.1
-//  总重mass = 10.02
 #include <webots/robot.h>
 #include <webots/motor.h>
 #include <webots/keyboard.h> 
@@ -11,28 +9,31 @@
 #include <stdio.h>
 #include <math.h>
 
-
 #define TIME_STEP 10
+
+#include "include\initialize.h"
+#include "include\sensor.h"
+#include "include\basic_pack.h"
 
 int main(int argc, char **argv) {
   wb_robot_init();
 
-  char RF_motor;
-  RF_motor = wb_robot_get_device("RF_MOTOR");
-  wb_motor_set_position(RF_motor, INFINITY);
-  wb_motor_set_velocity(RF_motor, 0);
+  Initialize_chassis(&motor_device[0]);
+  Initialize_pos(&pos_device[0]);
+  Initialize_key();
   
-  char RB_motor;
-  RB_motor = wb_robot_get_device("RB_MOTOR");
-  wb_motor_set_position(RB_motor, INFINITY);
-  wb_motor_set_velocity(RB_motor, 0);
-
   while (wb_robot_step(TIME_STEP) != -1) {
-    wb_motor_set_velocity(RF_motor,-0.1);
-    wb_motor_set_velocity(RB_motor,0.1);
-     
+
+    pos_get_data(&pos[0],&pos_device[0]);
+
+    velocity_get_data();
+    printf("%f %f \n",velocity[0],velocity[1]);
+    master();
+
+    printf("---------------------------------\n");
+    printf("pos: %f %f %f %f\n",pos[0],pos[1],pos[2],pos[3]);
+    printf("--------------------------------\n");
   };
   wb_robot_cleanup();
-
   return 0;
 }

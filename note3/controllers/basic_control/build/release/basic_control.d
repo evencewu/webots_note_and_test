@@ -8,4 +8,5 @@ build/release/basic_control.o: basic_control.c \
  D:\software_git\Webots/include/controller/c/webots/Gyro.h \
  D:\software_git\Webots/include/controller/c/webots/Compass.h \
  D:\software_git\Webots/include/controller/c/webots/Accelerometer.h \
- D:\software_git\Webots/include/controller/c/webots/position_sensor.h
+ D:\software_git\Webots/include/controller/c/webots/position_sensor.h \
+ include\initialize.h include\sensor.h include\basic_pack.h
