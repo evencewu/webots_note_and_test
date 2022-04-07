@@ -20,6 +20,8 @@ Robot {
         }
         DEF RF_MOTOR RotationalMotor {
           name "RF_MOTOR"
+          acceleration 0.5
+          maxPosition 0.6
           maxTorque 35
         }
       ]
@@ -114,6 +116,8 @@ Robot {
         }
         DEF LF_MOTOR RotationalMotor {
           name "LF_MOTOR"
+          acceleration 0.5
+          minPosition -0.6
           maxTorque 35
         }
       ]
@@ -208,6 +212,7 @@ Robot {
         }
         DEF RB_MOTOR RotationalMotor {
           name "RB_MOTOR"
+          acceleration 0.5
           maxTorque 35
         }
       ]
@@ -358,6 +363,8 @@ Robot {
         }
         DEF LB_MOTOR RotationalMotor {
           name "LB_MOTOR"
+          acceleration 0.5
+          maxPosition 0.6
           maxTorque 35
         }
       ]
@@ -530,8 +537,8 @@ Robot {
   selfCollision TRUE
 }
 Viewpoint {
-  orientation 0.05212251784839759 -0.9875843834382617 -0.1481901775490272 3.851640739504491
-  position 0.9690286796348131 0.8176632935572403 -1.1752527289925443
+  orientation 0.9560719043301197 0.29309727852851425 0.004527589839728616 6.057550998254739
+  position -0.033635306583740254 0.7658100088383375 1.4599747913608232
 }
 TexturedBackground {
 }

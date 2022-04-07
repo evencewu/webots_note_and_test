@@ -1,56 +1,79 @@
-#include <webots/robot.h>
-#include <webots/motor.h>
-#include <webots/keyboard.h> 
-#include <webots/inertial_unit.h>
-#include <webots/Gyro.h>
-#include <webots/Compass.h>
-#include <webots/Accelerometer.h>
-#include <webots/position_sensor.h>
-
 #ifndef _INITIALIZE_
 #define _INITIALIZE_
 
-#define l1 0.15
-#define l2 0.31819805153394638598037996294718
-#define d 0.15
 
-//全局姿态参数
-double want_x_R = 0; 
-double want_y_R = -0.225;
-double want_x_L = 0; 
-double want_y_L = -0.225;
-//底盘电机初始化函数
-char motor_device[6];
-double before_pos[6] = {0,0,0,0,0,0};//辅助变量
-double velocity[6];                  //电机角速度单位rand/s
-void Initialize_chassis(char *motor_device){
-  char motor_names[6][10] = {"RF_MOTOR","RB_MOTOR",
-                            "LF_MOTOR","LB_MOTOR",
-                            "L_MOTOR","R_MOTOR"};
-  for (int i = 0; i < 6; i++){
-    *(motor_device+i) = wb_robot_get_device(motor_names[i]);
-    wb_motor_set_position(*(motor_device+i), INFINITY);
-    wb_motor_set_velocity(*(motor_device+i), 0);
+
+//电机初始化
+void motor_init(double angle_set){
+  ROBOT.motor[RB_MOTOR].name = "RB_MOTOR";
+  ROBOT.motor[RF_MOTOR].name = "RF_MOTOR";
+  ROBOT.motor[LB_MOTOR].name = "LB_MOTOR";
+  ROBOT.motor[LF_MOTOR].name = "LF_MOTOR";
+  ROBOT.motor[R_MOTOR ].name = "R_MOTOR"; //右
+  ROBOT.motor[L_MOTOR ].name = "L_MOTOR"; //左
+
+  int i;
+  for( i = 0; i < MOTOR_NUM; i++){
+    //获取电机ID
+    ROBOT.motor[i].ID = wb_robot_get_device(ROBOT.motor[i].name);
+    assert(ROBOT.motor[i].ID);
+    //获取最大扭矩
+    ROBOT.motor[i].MAX_TORQUE = wb_motor_get_max_torque(ROBOT.motor[i].ID);
+    //使能扭矩反馈
+    int sampling_period;
+    sampling_period = TIME_STEP;// wb_motor_get_torque_feedback_sampling_period(ROBOT.motor[i].ID);
+    wb_motor_enable_torque_feedback(ROBOT.motor[i].ID, sampling_period);
+    //归零
+    ROBOT.motor[i].torque = 0;
+    ROBOT.motor[i].omg = 0;
+    ROBOT.motor[i].angle = angle_set;
+    printf("get motor %s succeed: %d\n", ROBOT.motor[i].name, ROBOT.motor[i].ID);
   }
-}
+};
 
-//编码器初始化函数
-double pos[6];
-char pos_device[6];
-void Initialize_pos(char *pos_device){
-  char pos_names[6][8] = {"RF_POS"     ,"RB_POS",
-                          "LF_POS"     ,"LB_POS",
-                          "L_POS","R_POS"};
-  for (int i = 0; i < 6; i++){
-    *(pos_device+i) = wb_robot_get_device(pos_names[i]);
-    wb_position_sensor_enable(*(pos_device+i),TIME_STEP);
+void position_sensor_init(){
+  ROBOT.position_sensor[RB_POS].name = "RB_POS";
+  ROBOT.position_sensor[RF_POS].name = "RF_POS";
+  ROBOT.position_sensor[LB_POS].name = "LB_POS";
+  ROBOT.position_sensor[LF_POS].name = "LF_POS";
+  ROBOT.position_sensor[R_POS ].name = "R_POS";
+  ROBOT.position_sensor[L_POS ].name = "L_POS";
+
+  int i;
+  for( i = 0; i < MOTOR_NUM; i++){
+  ROBOT.position_sensor[i].ID = wb_robot_get_device(ROBOT.position_sensor[i].name);
+  assert(ROBOT.position_sensor[i].ID);
+  wb_position_sensor_enable(ROBOT.position_sensor[i].ID, (int)TIME_STEP);
+
+  ROBOT.position_sensor[i].position = 0;
+  ROBOT.position_sensor[i].position_last = 0;
+
+  ROBOT.position_sensor[i].w = 0;
+  ROBOT.position_sensor[i].w_last = 0;
   }
-}
+};
 
-int key;
-void Initialize_key(){
-  wb_keyboard_enable(TIME_STEP); 
-}
+void imu_init(){
+  ROBOT.imu.name = "IMU";
+  ROBOT.imu.ID = wb_robot_get_device(ROBOT.imu.name);
+  wb_inertial_unit_enable(ROBOT.imu.ID, (int)TIME_STEP);
+  ROBOT.imu.angle_value[yaw  ] = 0;
+  ROBOT.imu.angle_value[pitch] = 0;
+  ROBOT.imu.angle_value[roll ] = 0;
+};
 
+void acce_init(){
+  ROBOT.acce.accelerometer_name = "ACCE";
+  ROBOT.acce.accelerometer_ID = wb_robot_get_device(ROBOT.acce.accelerometer_name);
+  wb_accelerometer_enable(ROBOT.acce.accelerometer_ID, (int)TIME_STEP);
+};
+
+void gyro_init(){
+  ROBOT.gyro.gyro_ID = wb_robot_get_device("GYRO");
+  wb_gyro_enable(ROBOT.gyro.gyro_ID, (int)TIME_STEP);
+  ROBOT.gyro.gyro_value[yaw  ] = 0;
+  ROBOT.gyro.gyro_value[pitch] = 0;
+  ROBOT.gyro.gyro_value[roll ] = 0;
+};
 
 #endif

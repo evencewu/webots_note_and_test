@@ -1,11 +1,3 @@
-#include <webots/robot.h>
-#include <webots/motor.h>
-#include <webots/keyboard.h> 
-#include <webots/inertial_unit.h>
-#include <webots/Gyro.h>
-#include <webots/Compass.h>
-#include <webots/Accelerometer.h>
-#include <webots/position_sensor.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -65,7 +57,7 @@ void stable_leg(double a,double b,double w_x ,double w_y,double x ,double y,doub
     speed_Insolution_leg(a,b,w_v_x,w_v_y,&V_motor[0]);
     double error_v_1 = v2 - V_motor[0];
     double error_v_2 = v1 - V_motor[1];
-    double Kp = 8;
+    double Kp = 4;
     *F_motor     = error_v_1 *Kp;
     *(F_motor+1) = error_v_2 *Kp;
     printf("----------------------\n");
@@ -119,15 +111,15 @@ void master(){
     stable_leg(pos[3], -pos[2], want_x_L, want_y_L, L_xy[0], L_xy[1], velocity[3], velocity[2], &F_motor[2]);
     printf("%f %f %f %f\n",F_motor[0],F_motor[1],F_motor[2],F_motor[3]);
 
-    //wb_motor_set_available_torque(motor_device[0],F_motor[0]);
-    //wb_motor_set_available_torque(motor_device[1],F_motor[1]);
-    //wb_motor_set_available_torque(motor_device[2],F_motor[2]);
-    //wb_motor_set_available_torque(motor_device[3],F_motor[3]);
+    wb_motor_set_available_torque(motor_device[0],F_motor[0]);
+    wb_motor_set_available_torque(motor_device[1],F_motor[1]);
+    wb_motor_set_available_torque(motor_device[2],F_motor[2]);
+    wb_motor_set_available_torque(motor_device[3],F_motor[3]);
     
-    wb_motor_set_available_torque(motor_device[0],-50);
-    wb_motor_set_available_torque(motor_device[1], 50);
-    wb_motor_set_available_torque(motor_device[2],-50);
-    wb_motor_set_available_torque(motor_device[3], 50);
+    //wb_motor_set_available_torque(motor_device[0],-35);
+    //wb_motor_set_available_torque(motor_device[1], 35);
+    //wb_motor_set_available_torque(motor_device[2],-35);
+    //wb_motor_set_available_torque(motor_device[3], 35);
     
     
     
