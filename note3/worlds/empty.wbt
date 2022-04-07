@@ -65,6 +65,7 @@ Robot {
                 density -1
                 mass 0.1
               }
+              locked TRUE
             }
           }
           DEF RF_LEG_1 Shape {
@@ -97,6 +98,7 @@ Robot {
           density -1
           mass 0.1
         }
+        locked TRUE
       }
     }
     DEF LF_LEG HingeJoint {
@@ -156,6 +158,7 @@ Robot {
                 density -1
                 mass 0.1
               }
+              locked TRUE
             }
           }
           DEF LF_LEG_1 Shape {
@@ -188,6 +191,7 @@ Robot {
           density -1
           mass 0.1
         }
+        locked TRUE
       }
     }
     DEF RB_LEG HingeJoint {
@@ -522,8 +526,8 @@ Robot {
   selfCollision TRUE
 }
 Viewpoint {
-  orientation -0.006732312300507488 -0.9730135654721418 -0.23064968540684946 3.1112033169023054
-  position -0.06547976869585229 1.1517933582685826 -1.345999920075377
+  orientation 0.05212251784839759 -0.9875843834382617 -0.1481901775490272 3.851640739504491
+  position 0.9690286796348131 0.8176632935572403 -1.1752527289925443
 }
 TexturedBackground {
 }

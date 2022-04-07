@@ -27,7 +27,6 @@ int main(int argc, char **argv) {
     pos_get_data(&pos[0],&pos_device[0]);
 
     velocity_get_data();
-    printf("%f %f \n",velocity[0],velocity[1]);
     master();
 
     printf("---------------------------------\n");
