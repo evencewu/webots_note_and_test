@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
   while (wb_robot_step(TIME_STEP) != -1) {
 
     pos_get_data(&pos[0],&pos_device[0]);
-
+    
     velocity_get_data();
     master();
 

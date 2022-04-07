@@ -20,6 +20,7 @@ Robot {
         }
         DEF RF_MOTOR RotationalMotor {
           name "RF_MOTOR"
+          maxTorque 35
         }
       ]
       endPoint DEF RF_LEG_1 Solid {
@@ -113,6 +114,7 @@ Robot {
         }
         DEF LF_MOTOR RotationalMotor {
           name "LF_MOTOR"
+          maxTorque 35
         }
       ]
       endPoint DEF RF_LEG_1 Solid {
@@ -206,6 +208,7 @@ Robot {
         }
         DEF RB_MOTOR RotationalMotor {
           name "RB_MOTOR"
+          maxTorque 35
         }
       ]
       endPoint DEF RB_LEG_1 Solid {
@@ -355,6 +358,7 @@ Robot {
         }
         DEF LB_MOTOR RotationalMotor {
           name "LB_MOTOR"
+          maxTorque 35
         }
       ]
       endPoint DEF LB_LEG_1 Solid {

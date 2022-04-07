@@ -14,6 +14,11 @@
 #define l2 0.31819805153394638598037996294718
 #define d 0.15
 
+//全局姿态参数
+double want_x_R = 0; 
+double want_y_R = -0.225;
+double want_x_L = 0; 
+double want_y_L = -0.225;
 //底盘电机初始化函数
 char motor_device[6];
 double before_pos[6] = {0,0,0,0,0,0};//辅助变量
