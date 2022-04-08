@@ -26,4 +26,4 @@ build/release/basic_control.o: basic_control.c \
  include_webots/inertial_unit.h include_webots/accelerometer.h \
  include_webots/gyro.h include_webots/keyboard.h include_webots/mouse.h \
  include_webots/camera.h include_webots/robot.h include\initialize.h \
- include\sensor.h
+ include\sensor.h include\control.h

@@ -47,9 +47,14 @@ typedef struct motor_feature{
   WbDeviceTag ID;
   const char *name;
   double MAX_TORQUE;
+
+  double d_torque;
   double torque;
-  double torque_fb;
-  double torque_tgt;
+  double torque_fb;//力矩读取
+  double torque_last;
+
+  double want_V;
+
   double omg;
   double angle;
   double angle_last; //
@@ -97,9 +102,12 @@ typedef struct LEG
     //足端速度
     double Vx;
     double Vy;
-    //足端力
+    //足端力（实时）
     double Fx;
     double Fy;
+    //
+    double want_Px;
+    double want_Py;
 } LEG;
 
 typedef struct robot
@@ -128,7 +136,13 @@ void robot_init();
 
 void flash_sensor_data();
     void MOTOR_data();
-
-
+    void LEG_data();
+        void LEG_solution_pos(double A,double B,double C,double D);
+        void LEG_solution_speed(double A ,double B ,double C ,double D,
+                                double v1,double v2,double v3,double v4);
+        void LEG_solution_speed_opposite(double A,double B,double vx_1,double vy_1);
+        void stable_leg(double x,double y,double w_x ,double w_y,
+                        double a,double b,int RL);
+                  
 
 #endif

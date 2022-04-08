@@ -81,23 +81,31 @@ robot ROBOT;
 
 #include "include\initialize.h"
 #include "include\sensor.h"
+#include "include\control.h"
 
 int main(int argc, char **argv) {
   wb_robot_init();//系统初始化
   
   robot_init();
 
-  wb_motor_set_available_torque(ROBOT.motor[0].ID, 1 * ROBOT.motor[0].torque);
-  wb_motor_set_available_torque(ROBOT.motor[1].ID, 1 * ROBOT.motor[1].torque);
-  wb_motor_set_available_torque(ROBOT.motor[2].ID, 1 * ROBOT.motor[2].torque);
-  wb_motor_set_available_torque(ROBOT.motor[3].ID, 1 * ROBOT.motor[3].torque);
-
   while (wb_robot_step(TIME_STEP) != -1) {
     flash_sensor_data();//刷新全局传感器数据和预测数据
+    stable_leg( ROBOT.leg1.Px, ROBOT.leg1.Py, 0, -0.225,
+                ROBOT.position_sensor[RB_POS].position,
+               -ROBOT.position_sensor[RF_POS].position,0);
+    wb_motor_set_available_torque(ROBOT.motor[RB_MOTOR].ID,-ROBOT.motor[RB_MOTOR].torque);     
+    wb_motor_set_available_torque(ROBOT.motor[RF_MOTOR].ID,ROBOT.motor[RF_MOTOR].torque);       
+    
+    printf("leg1_xy:%f %f\n",ROBOT.leg1.Px,ROBOT.leg1.Py);
+    printf("leg2_xy:%f %f\n",ROBOT.leg2.Px,ROBOT.leg2.Py);
+    printf("leg1_V:%f %f\n",ROBOT.leg1.Vx,ROBOT.leg1.Vy);
+    printf("leg2_V:%f %f\n",ROBOT.leg2.Vx,ROBOT.leg2.Vy);  
+    printf("leg1_F:%f %f\n",ROBOT.motor[RB_MOTOR].torque,ROBOT.motor[RF_MOTOR].torque);
+
   };
   wb_robot_cleanup();
   return 0;
-}
+};
 
 void robot_init(){
   ROBOT.height_of_center = 0.225;
@@ -105,14 +113,16 @@ void robot_init(){
   ROBOT.mass_body = MASS_BODY;
   //标定
   motor_init(0);
+  
   position_sensor_init();
   //imu_init();
   //acce_init();
   //gyro_init();
-}
+};
 
 void flash_sensor_data(){
   MOTOR_data();
-}
+  LEG_data();
+};
 
 

@@ -27,6 +27,8 @@ void motor_init(double angle_set){
     ROBOT.motor[i].torque = 0;
     ROBOT.motor[i].omg = 0;
     ROBOT.motor[i].angle = angle_set;
+    ROBOT.motor[i].torque_last = 0;
+    wb_motor_set_available_torque(ROBOT.motor[i].ID,ROBOT.motor[i].torque);
     printf("get motor %s succeed: %d\n", ROBOT.motor[i].name, ROBOT.motor[i].ID);
   }
 };
@@ -37,7 +39,7 @@ void position_sensor_init(){
   ROBOT.position_sensor[LB_POS].name = "LB_POS";
   ROBOT.position_sensor[LF_POS].name = "LF_POS";
   ROBOT.position_sensor[R_POS ].name = "R_POS";
-  ROBOT.position_sensor[L_POS ].name = "L_POS";
+  ROBOT.position_sensor[L_POS ].name = "L_POS"; 
 
   int i;
   for( i = 0; i < MOTOR_NUM; i++){
