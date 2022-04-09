@@ -18,7 +18,7 @@
  *      长臂  l2 = 0.31819805153394638598037996294718 m
  *      轴距  l1 = 0.15 m
  * 
- * 
+ * 输入读取端RF/LB_pos/motor 方向将置于默认状态，但在部分算法输入输出端将被反转以适应不同机构的算法同构
  * 
 **/
 #include <assert.h>
@@ -87,20 +87,12 @@ int main(int argc, char **argv) {
   wb_robot_init();//系统初始化
   
   robot_init();
-
+  
   while (wb_robot_step(TIME_STEP) != -1) {
-    flash_sensor_data();//刷新全局传感器数据和预测数据
-    stable_leg( ROBOT.leg1.Px, ROBOT.leg1.Py, 0, -0.225,
-                ROBOT.position_sensor[RB_POS].position,
-               -ROBOT.position_sensor[RF_POS].position,0);
-    wb_motor_set_available_torque(ROBOT.motor[RB_MOTOR].ID,-ROBOT.motor[RB_MOTOR].torque);     
-    wb_motor_set_available_torque(ROBOT.motor[RF_MOTOR].ID,ROBOT.motor[RF_MOTOR].torque);       
-    
-    printf("leg1_xy:%f %f\n",ROBOT.leg1.Px,ROBOT.leg1.Py);
-    printf("leg2_xy:%f %f\n",ROBOT.leg2.Px,ROBOT.leg2.Py);
-    printf("leg1_V:%f %f\n",ROBOT.leg1.Vx,ROBOT.leg1.Vy);
-    printf("leg2_V:%f %f\n",ROBOT.leg2.Vx,ROBOT.leg2.Vy);  
-    printf("leg1_F:%f %f\n",ROBOT.motor[RB_MOTOR].torque,ROBOT.motor[RF_MOTOR].torque);
+    flash_sensor_data();//刷新全局传感器数据  
+    control_master();
+    print_data();
+    perform_motor();
 
   };
   wb_robot_cleanup();
@@ -111,9 +103,9 @@ void robot_init(){
   ROBOT.height_of_center = 0.225;
   ROBOT.radius_of_wheel = 0.06;
   ROBOT.mass_body = MASS_BODY;
+  
   //标定
   motor_init(0);
-  
   position_sensor_init();
   //imu_init();
   //acce_init();
@@ -125,4 +117,35 @@ void flash_sensor_data(){
   LEG_data();
 };
 
+void control_master(){
+  stable_leg(R, ROBOT.leg[R].Px, ROBOT.leg[R].Py, 0, -0.225, ROBOT.position_sensor[RB_MOTOR].position, -ROBOT.position_sensor[RF_MOTOR].position);
+  stable_leg(L, ROBOT.leg[L].Px, ROBOT.leg[L].Py, 0, -0.225, ROBOT.position_sensor[LB_MOTOR].position, -ROBOT.position_sensor[LF_MOTOR].position);
+}
 
+void print_data(){
+  printf("----------------------------------------------------------------\n");
+  printf("R_POS:[%f,%f]|||L_POS:[%f,%f]\n",ROBOT.position_sensor[RB_MOTOR].position,ROBOT.position_sensor[RF_MOTOR].position,
+                                           ROBOT.position_sensor[LB_MOTOR].position,ROBOT.position_sensor[LF_MOTOR].position);
+  printf("R足端位置:[%f,%f]|||L足端位置:[%f,%f]\n",ROBOT.leg[R].Px,ROBOT.leg[R].Py,ROBOT.leg[L].Px,ROBOT.leg[L].Py);
+  printf("R足端速度:[%f,%f]|||L足端速度:[%f,%f]\n",ROBOT.leg[R].Vx,ROBOT.leg[R].Vy,ROBOT.leg[L].Vx,ROBOT.leg[L].Vy);
+  printf("R电机力矩:[%f,%f]|||L电机力矩:[%f,%f]\n",ROBOT.motor[RB_MOTOR].torque, ROBOT.motor[RF_MOTOR].torque,
+                                                  ROBOT.motor[LB_MOTOR].torque, ROBOT.motor[LF_MOTOR].torque);
+  printf("----------------------------------------------------------------\n");
+}
+
+void perform_motor(){
+  for(int i = 0; i < 4;i++){
+    if(ROBOT.motor[i].torque > 35)
+      ROBOT.motor[i].torque = 35;
+    else if(ROBOT.motor[i].torque < -35)
+      ROBOT.motor[i].torque = -35;
+  }
+  wb_motor_set_torque(ROBOT.motor[RB_MOTOR].ID,  1 * ROBOT.motor[RB_MOTOR].torque);
+  wb_motor_set_torque(ROBOT.motor[RF_MOTOR].ID,  1 * ROBOT.motor[RF_MOTOR].torque);
+  wb_motor_set_torque(ROBOT.motor[LB_MOTOR].ID,  1 * ROBOT.motor[LB_MOTOR].torque);
+  wb_motor_set_torque(ROBOT.motor[LF_MOTOR].ID,  1 * ROBOT.motor[LF_MOTOR].torque);
+  //wb_motor_set_available_torque(ROBOT.motor[R_MOTOR ].ID,  1 * ROBOT.motor[R_MOTOR ].torque);
+  //wb_motor_set_available_torque(ROBOT.motor[L_MOTOR ].ID,  1 * ROBOT.motor[L_MOTOR ].torque);
+
+
+}

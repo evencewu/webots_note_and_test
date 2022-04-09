@@ -2,6 +2,7 @@
     "files.associations": {
         "initialize.h": "c",
         "sensor.h": "c",
-        "control.h": "c"
+        "control.h": "c",
+        "typeinfo": "c"
     }
 }

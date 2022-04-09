@@ -19,27 +19,28 @@ void motor_init(double angle_set){
     assert(ROBOT.motor[i].ID);
     //获取最大扭矩
     ROBOT.motor[i].MAX_TORQUE = wb_motor_get_max_torque(ROBOT.motor[i].ID);
+    //printf("max_t%f\n",ROBOT.motor[i].MAX_TORQUE);
     //使能扭矩反馈
     int sampling_period;
     sampling_period = TIME_STEP;// wb_motor_get_torque_feedback_sampling_period(ROBOT.motor[i].ID);
     wb_motor_enable_torque_feedback(ROBOT.motor[i].ID, sampling_period);
     //归零
     ROBOT.motor[i].torque = 0;
-    ROBOT.motor[i].omg = 0;
     ROBOT.motor[i].angle = angle_set;
     ROBOT.motor[i].torque_last = 0;
-    wb_motor_set_available_torque(ROBOT.motor[i].ID,ROBOT.motor[i].torque);
+    wb_motor_set_torque(ROBOT.motor[i].ID,ROBOT.motor[i].torque);
     printf("get motor %s succeed: %d\n", ROBOT.motor[i].name, ROBOT.motor[i].ID);
   }
+
 };
 
 void position_sensor_init(){
-  ROBOT.position_sensor[RB_POS].name = "RB_POS";
-  ROBOT.position_sensor[RF_POS].name = "RF_POS";
-  ROBOT.position_sensor[LB_POS].name = "LB_POS";
-  ROBOT.position_sensor[LF_POS].name = "LF_POS";
-  ROBOT.position_sensor[R_POS ].name = "R_POS";
-  ROBOT.position_sensor[L_POS ].name = "L_POS"; 
+  ROBOT.position_sensor[RB_MOTOR].name = "RB_POS";
+  ROBOT.position_sensor[RF_MOTOR].name = "RF_POS";
+  ROBOT.position_sensor[LB_MOTOR].name = "LB_POS";
+  ROBOT.position_sensor[LF_MOTOR].name = "LF_POS";
+  ROBOT.position_sensor[R_MOTOR].name = "R_POS";
+  ROBOT.position_sensor[L_MOTOR].name = "L_POS"; 
 
   int i;
   for( i = 0; i < MOTOR_NUM; i++){

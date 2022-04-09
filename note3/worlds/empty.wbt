@@ -6,7 +6,8 @@ Floor {
   size 100 100
 }
 Robot {
-  translation 0 0.4 0
+  translation 0 0.34 0
+  rotation 0 0 1 0
   children [
     DEF RF_LEG HingeJoint {
       jointParameters DEF RF_1 HingeJointParameters {
@@ -20,8 +21,6 @@ Robot {
         }
         DEF RF_MOTOR RotationalMotor {
           name "RF_MOTOR"
-          acceleration 0.5
-          maxPosition 0.6
           maxTorque 35
         }
       ]
@@ -116,8 +115,8 @@ Robot {
         }
         DEF LF_MOTOR RotationalMotor {
           name "LF_MOTOR"
-          acceleration 0.5
           minPosition -0.6
+          maxPosition 1
           maxTorque 35
         }
       ]
@@ -212,7 +211,6 @@ Robot {
         }
         DEF RB_MOTOR RotationalMotor {
           name "RB_MOTOR"
-          acceleration 0.5
           maxTorque 35
         }
       ]
@@ -363,7 +361,7 @@ Robot {
         }
         DEF LB_MOTOR RotationalMotor {
           name "LB_MOTOR"
-          acceleration 0.5
+          minPosition -1
           maxPosition 0.6
           maxTorque 35
         }
@@ -538,7 +536,7 @@ Robot {
 }
 Viewpoint {
   orientation 0.9560719043301197 0.29309727852851425 0.004527589839728616 6.057550998254739
-  position -0.09239955969346035 0.7442579277890384 1.338498050974303
+  position -0.1074143827604882 0.769810278561874 2.2330802895886808
 }
 TexturedBackground {
 }

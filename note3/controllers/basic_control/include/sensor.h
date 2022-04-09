@@ -20,16 +20,17 @@ void MOTOR_data()//轮询所有电机传感器
   }
   //轮子里程计免了(*^_^*)               
 };
+
 //腿部数据刷新&处理
 //=====================================================================================
 void LEG_data(){
-  LEG_solution_pos( ROBOT.position_sensor[RB_POS].position , -ROBOT.position_sensor[RF_POS].position,
-                   -ROBOT.position_sensor[LB_POS].position ,  ROBOT.position_sensor[LF_POS].position);
+  LEG_solution_pos(R, ROBOT.position_sensor[RB_MOTOR].position , -ROBOT.position_sensor[RF_MOTOR].position); //反转
+  LEG_solution_pos(L, ROBOT.position_sensor[LB_MOTOR].position , -ROBOT.position_sensor[LF_MOTOR].position);
 
-  LEG_solution_speed( ROBOT.position_sensor[RB_POS].position , -ROBOT.position_sensor[RF_POS].position,
-                     -ROBOT.position_sensor[LB_POS].position ,  ROBOT.position_sensor[LF_POS].position,
-                      ROBOT.position_sensor[RB_POS].w        ,  ROBOT.position_sensor[RF_POS].w,
-                      ROBOT.position_sensor[LB_POS].w        ,  ROBOT.position_sensor[LF_POS].w);       
+  LEG_solution_speed(R, ROBOT.position_sensor[RB_MOTOR].position , -ROBOT.position_sensor[RF_MOTOR].position,
+                        ROBOT.position_sensor[RB_MOTOR].w        , -ROBOT.position_sensor[RF_MOTOR].w);  
+  LEG_solution_speed(L, ROBOT.position_sensor[LB_MOTOR].position , -ROBOT.position_sensor[LF_MOTOR].position,
+                        ROBOT.position_sensor[LB_MOTOR].w        , -ROBOT.position_sensor[LF_MOTOR].w);      
 };
 //=====================================================================================
 #endif

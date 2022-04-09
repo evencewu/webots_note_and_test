@@ -10,6 +10,9 @@
 #define pitch 1
 #define yaw   2
 
+#define L 1
+#define R 0
+
 #define RB_MOTOR  0
 #define RF_MOTOR  1
 #define LB_MOTOR  2
@@ -17,19 +20,13 @@
 #define R_MOTOR   4
 #define L_MOTOR   5
 
-#define RB_POS  0
-#define RF_POS  1
-#define LB_POS  2
-#define LF_POS  3
-#define R_POS   4
-#define L_POS   5
-
 //物理&特征常数
 #define MASS_BODY 30
 #define MASS_COMPONENT 0.5
-#define MOTO 6
 
 #define MOTOR_NUM 6
+
+#define e 2.71828
 
 #include <include_webots/motor.h>
 #include <include_webots/position_sensor.h>
@@ -48,16 +45,15 @@ typedef struct motor_feature{
   const char *name;
   double MAX_TORQUE;
 
-  double d_torque;
-  double torque;
-  double torque_fb;//力矩读取
-  double torque_last;
+  double torque;//力矩
+  double d_torque;//变化量
+  double torque_fb;//读取
+  double torque_last;//上一个时间戳
 
-  double want_V;
+  double want_W;
 
-  double omg;
   double angle;
-  double angle_last; //
+  double angle_last; 
 }MOTOR;
 
 //编码器参数
@@ -118,8 +114,8 @@ typedef struct robot
     double mass_wheel; //kg
     double velocity;  //m/s
 
-    LEG leg1;
-    LEG leg2;
+    LEG leg[2];
+    
 
     MOTOR motor[6];
     POSITION_SENSOR position_sensor[6];
@@ -137,12 +133,13 @@ void robot_init();
 void flash_sensor_data();
     void MOTOR_data();
     void LEG_data();
-        void LEG_solution_pos(double A,double B,double C,double D);
-        void LEG_solution_speed(double A ,double B ,double C ,double D,
-                                double v1,double v2,double v3,double v4);
-        void LEG_solution_speed_opposite(double A,double B,double vx_1,double vy_1);
-        void stable_leg(double x,double y,double w_x ,double w_y,
-                        double a,double b,int RL);
-                  
+        void LEG_solution_pos(int RL,double A,double B);
+        void LEG_solution_speed(int RL,double A ,double B ,double v1,double v2);
+        void LEG_solution_speed_opposite(int RL,double A,double B,double vx_1,double vy_1);
+void control_master();
+    void stable_leg(int RL,double x,double y,double w_x ,double w_y,
+                    double a,double b);
+void print_data();        
+void perform_motor();          
 
 #endif
