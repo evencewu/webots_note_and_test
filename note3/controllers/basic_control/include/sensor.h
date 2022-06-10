@@ -15,9 +15,8 @@ void MOTOR_data()//轮询所有电机传感器
     ROBOT.position_sensor[i].position_last = ROBOT.position_sensor[i].position;
     
     ROBOT.motor[i].torque_fb = wb_motor_get_torque_feedback(ROBOT.motor[i].ID);
-    ROBOT.motor[i].d_torque = ROBOT.motor[i].torque_fb - ROBOT.motor[i].torque_last;
     ROBOT.motor[i].torque_last = ROBOT.motor[i].torque_fb;
-  }
+  }  
   //轮子里程计免了(*^_^*)               
 };
 
@@ -33,4 +32,61 @@ void LEG_data(){
                         ROBOT.position_sensor[LB_MOTOR].w        , -ROBOT.position_sensor[LF_MOTOR].w);      
 };
 //=====================================================================================
+
+
+void key_data(){
+  ky = wb_keyboard_get_key();
+  if(ky == 74){
+    if(ROBOT.leg[R].want_Py < -0.1){
+      ROBOT.leg[R].want_Py = ROBOT.leg[R].want_Py + 0.001;
+    }else{
+      ROBOT.leg[R].want_Py = -0.1;
+    };
+
+    if(ROBOT.leg[L].want_Py < -0.1){
+      ROBOT.leg[L].want_Py = ROBOT.leg[L].want_Py + 0.001;
+    }else{
+      ROBOT.leg[L].want_Py = -0.1;//0.088
+    };
+
+  }else if(ky == 85){
+    if(ROBOT.leg[R].want_Py > -0.32){
+      ROBOT.leg[R].want_Py = ROBOT.leg[R].want_Py - 0.001;
+    }else{
+      ROBOT.leg[R].want_Py = -0.32;
+    };
+
+    if(ROBOT.leg[L].want_Py > -0.32){
+      ROBOT.leg[L].want_Py = ROBOT.leg[L].want_Py - 0.001;
+    }else{
+      ROBOT.leg[L].want_Py = -0.32;
+    };
+
+  }else if(ky == 72){
+    if(ROBOT.leg[R].want_Px > -0.1){
+      ROBOT.leg[R].want_Px = ROBOT.leg[R].want_Px - 0.001;
+    }else{
+      ROBOT.leg[R].want_Px = -0.1;
+    };
+
+    if(ROBOT.leg[L].want_Px > -0.1){
+      ROBOT.leg[L].want_Px = ROBOT.leg[L].want_Px - 0.001;
+    }else{
+      ROBOT.leg[L].want_Px = -0.1;
+    };
+
+  }else if(ky == 75){
+    if(ROBOT.leg[R].want_Px < 0.1){
+      ROBOT.leg[R].want_Px = ROBOT.leg[R].want_Px + 0.001;
+    }else{
+      ROBOT.leg[R].want_Px = 0.1;
+    };
+
+    if(ROBOT.leg[L].want_Px < 0.1){
+      ROBOT.leg[L].want_Px = ROBOT.leg[L].want_Px + 0.001;
+    }else{
+      ROBOT.leg[L].want_Px = 0.1;
+    };
+  }
+}
 #endif

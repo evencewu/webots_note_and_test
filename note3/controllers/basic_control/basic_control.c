@@ -98,32 +98,43 @@ int main(int argc, char **argv) {
   wb_robot_cleanup();
   return 0;
 };
-
+//=====================================
 void robot_init(){
   ROBOT.height_of_center = 0.225;
   ROBOT.radius_of_wheel = 0.06;
   ROBOT.mass_body = MASS_BODY;
-  
+
+  ROBOT.leg[R].want_Px = 0;
+  ROBOT.leg[R].want_Py = -0.225;
+  ROBOT.leg[L].want_Px = 0;
+  ROBOT.leg[L].want_Py = -0.225;
+
   //标定
   motor_init(0);
   position_sensor_init();
-  //imu_init();
-  //acce_init();
-  //gyro_init();
+  imu_init();
+  acce_init();
+  gyro_init();
+  key_mouse_init();
 };
-
+//=====================================
 void flash_sensor_data(){
   MOTOR_data();
   LEG_data();
+  key_data();
 };
-
+//=====================================
 void control_master(){
-  stable_leg(R, ROBOT.leg[R].Px, ROBOT.leg[R].Py, 0, -0.225, ROBOT.position_sensor[RB_MOTOR].position, -ROBOT.position_sensor[RF_MOTOR].position);
-  stable_leg(L, ROBOT.leg[L].Px, ROBOT.leg[L].Py, 0, -0.225, ROBOT.position_sensor[LB_MOTOR].position, -ROBOT.position_sensor[LF_MOTOR].position);
+  stable_leg(R, ROBOT.leg[R].Px, ROBOT.leg[R].Py, ROBOT.leg[R].want_Px, ROBOT.leg[R].want_Py, ROBOT.position_sensor[RB_MOTOR].position, -ROBOT.position_sensor[RF_MOTOR].position);
+  stable_leg(L, ROBOT.leg[L].Px, ROBOT.leg[L].Py, ROBOT.leg[L].want_Px, ROBOT.leg[L].want_Py, ROBOT.position_sensor[LB_MOTOR].position, -ROBOT.position_sensor[LF_MOTOR].position);
 }
-
+//=====================================
 void print_data(){
   printf("----------------------------------------------------------------\n");
+  printf("RW_P:[%f,%f]|||LW_P:[%f,%f]\n",ROBOT.motor[RB_MOTOR].want_P, ROBOT.motor[RF_MOTOR].want_P,
+                                           ROBOT.motor[LB_MOTOR].want_P, ROBOT.motor[LF_MOTOR].want_P);
+  printf("RW_XY:[%f,%f]|||LW_XY:[%f,%f]\n",ROBOT.leg[R].want_Px, ROBOT.leg[R].want_Py,
+                                           ROBOT.leg[L].want_Px, ROBOT.leg[L].want_Py);
   printf("R_POS:[%f,%f]|||L_POS:[%f,%f]\n",ROBOT.position_sensor[RB_MOTOR].position,ROBOT.position_sensor[RF_MOTOR].position,
                                            ROBOT.position_sensor[LB_MOTOR].position,ROBOT.position_sensor[LF_MOTOR].position);
   printf("R足端位置:[%f,%f]|||L足端位置:[%f,%f]\n",ROBOT.leg[R].Px,ROBOT.leg[R].Py,ROBOT.leg[L].Px,ROBOT.leg[L].Py);
@@ -132,20 +143,22 @@ void print_data(){
                                                   ROBOT.motor[LB_MOTOR].torque, ROBOT.motor[LF_MOTOR].torque);
   printf("----------------------------------------------------------------\n");
 }
-
+//=====================================
 void perform_motor(){
+
   for(int i = 0; i < 4;i++){
     if(ROBOT.motor[i].torque > 35)
       ROBOT.motor[i].torque = 35;
     else if(ROBOT.motor[i].torque < -35)
       ROBOT.motor[i].torque = -35;
   }
-  wb_motor_set_torque(ROBOT.motor[RB_MOTOR].ID,  1 * ROBOT.motor[RB_MOTOR].torque);
-  wb_motor_set_torque(ROBOT.motor[RF_MOTOR].ID,  1 * ROBOT.motor[RF_MOTOR].torque);
-  wb_motor_set_torque(ROBOT.motor[LB_MOTOR].ID,  1 * ROBOT.motor[LB_MOTOR].torque);
-  wb_motor_set_torque(ROBOT.motor[LF_MOTOR].ID,  1 * ROBOT.motor[LF_MOTOR].torque);
+
+  wb_motor_set_torque(ROBOT.motor[RB_MOTOR].ID,   1 * ROBOT.motor[RB_MOTOR].torque);
+  wb_motor_set_torque(ROBOT.motor[RF_MOTOR].ID,   -1 * ROBOT.motor[RF_MOTOR].torque);
+  wb_motor_set_torque(ROBOT.motor[LB_MOTOR].ID,   1 * ROBOT.motor[LB_MOTOR].torque);
+  wb_motor_set_torque(ROBOT.motor[LF_MOTOR].ID,   -1 * ROBOT.motor[LF_MOTOR].torque);
+
   //wb_motor_set_available_torque(ROBOT.motor[R_MOTOR ].ID,  1 * ROBOT.motor[R_MOTOR ].torque);
   //wb_motor_set_available_torque(ROBOT.motor[L_MOTOR ].ID,  1 * ROBOT.motor[L_MOTOR ].torque);
-
-
 }
+//=====================================

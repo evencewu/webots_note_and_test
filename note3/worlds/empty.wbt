@@ -13,6 +13,7 @@ Robot {
       jointParameters DEF RF_1 HingeJointParameters {
         axis 0 0 1
         anchor 0.075 0 0
+        minStop -2
         maxStop 0.6
       }
       device [
@@ -107,6 +108,7 @@ Robot {
       jointParameters DEF LF_1 HingeJointParameters {
         axis 0 0 1
         anchor 0.075 0 0
+        minStop -2
         maxStop 0.6
       }
       device [
@@ -115,8 +117,6 @@ Robot {
         }
         DEF LF_MOTOR RotationalMotor {
           name "LF_MOTOR"
-          minPosition -0.6
-          maxPosition 1
           maxTorque 35
         }
       ]
@@ -204,6 +204,7 @@ Robot {
         axis 0 0 1
         anchor -0.075 0 0
         minStop -0.6
+        maxStop 2
       }
       device [
         PositionSensor {
@@ -354,6 +355,7 @@ Robot {
         axis 0 0 1
         anchor -0.075 0 0
         minStop -0.6
+        maxStop 2
       }
       device [
         DEF LB_POS PositionSensor {
@@ -361,8 +363,6 @@ Robot {
         }
         DEF LB_MOTOR RotationalMotor {
           name "LB_MOTOR"
-          minPosition -1
-          maxPosition 0.6
           maxTorque 35
         }
       ]
@@ -531,12 +531,11 @@ Robot {
     density -1
     mass 4
   }
-  controller "basic_control"
-  selfCollision TRUE
+  controller "main"
 }
 Viewpoint {
   orientation 0.9560719043301197 0.29309727852851425 0.004527589839728616 6.057550998254739
-  position -0.1074143827604882 0.769810278561874 2.2330802895886808
+  position -0.09316436626568518 0.7232420483365822 2.020918554821009
 }
 TexturedBackground {
 }

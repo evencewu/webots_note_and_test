@@ -28,7 +28,8 @@ void motor_init(double angle_set){
     ROBOT.motor[i].torque = 0;
     ROBOT.motor[i].angle = angle_set;
     ROBOT.motor[i].torque_last = 0;
-    wb_motor_set_torque(ROBOT.motor[i].ID,ROBOT.motor[i].torque);
+    ROBOT.motor[i].I = 0;
+    wb_motor_set_torque(ROBOT.motor[i].ID,0);
     printf("get motor %s succeed: %d\n", ROBOT.motor[i].name, ROBOT.motor[i].ID);
   }
 
@@ -77,6 +78,11 @@ void gyro_init(){
   ROBOT.gyro.gyro_value[yaw  ] = 0;
   ROBOT.gyro.gyro_value[pitch] = 0;
   ROBOT.gyro.gyro_value[roll ] = 0;
+};
+
+int ky;
+void key_mouse_init(){
+  wb_keyboard_enable(TIME_STEP); 
 };
 
 #endif

@@ -46,10 +46,13 @@ typedef struct motor_feature{
   double MAX_TORQUE;
 
   double torque;//力矩
-  double d_torque;//变化量
   double torque_fb;//读取
   double torque_last;//上一个时间戳
 
+  //控制参数
+  double I;
+  
+  double want_P;
   double want_W;
 
   double angle;
@@ -101,7 +104,7 @@ typedef struct LEG
     //足端力（实时）
     double Fx;
     double Fy;
-    //
+    //目标足端坐标
     double want_Px;
     double want_Py;
 } LEG;
@@ -128,18 +131,23 @@ typedef struct robot
 
 void robot_init();
     void motor_init(double angle_set);
-
+    void imu_init();
+    void acce_init();
+    void gyro_init();
+    void key_mouse_init();
 
 void flash_sensor_data();
     void MOTOR_data();
     void LEG_data();
         void LEG_solution_pos(int RL,double A,double B);
+        void LEG_solution_pos_opposite(int RL,double X,double Y);
         void LEG_solution_speed(int RL,double A ,double B ,double v1,double v2);
         void LEG_solution_speed_opposite(int RL,double A,double B,double vx_1,double vy_1);
+
 void control_master();
     void stable_leg(int RL,double x,double y,double w_x ,double w_y,
                     double a,double b);
 void print_data();        
-void perform_motor();          
+void perform_motor();         
 
 #endif
