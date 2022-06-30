@@ -70,8 +70,6 @@
 #include <include_webots\touch_sensor.h>
 #include <include_webots\types.h>
 
-#include <stdio.h>
-#include <math.h>
 
 #define TIME_STEP 10
 

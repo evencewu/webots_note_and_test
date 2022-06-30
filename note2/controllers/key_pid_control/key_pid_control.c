@@ -1,13 +1,49 @@
 //机器参数质心离轴0.1
 //  总重mass = 10.02
-#include <webots/robot.h>
-#include <webots/motor.h>
-#include <webots/keyboard.h> 
-#include <webots/inertial_unit.h>
-#include <webots/Gyro.h>
-#include <webots/Compass.h>
-#include <webots/Accelerometer.h>
-#include <webots/position_sensor.h>
+
+#include <include_webots\accelerometer.h>
+#include <include_webots\brake.h>
+#include <include_webots\camera_recognition_object.h>
+#include <include_webots\camera.h>
+#include <include_webots\compass.h>
+#include <include_webots\connector.h>
+#include <include_webots\console.h>
+#include <include_webots\device.h>
+#include <include_webots\differential_wheels.h>
+#include <include_webots\display.h>
+#include <include_webots\distance_sensor.h>
+#include <include_webots\emitter.h>
+#include <include_webots\gps.h>
+#include <include_webots\gyro.h>
+#include <include_webots\inertial_unit.h>
+#include <include_webots\joystick.h>
+#include <include_webots\keyboard.h>
+#include <include_webots\led.h>
+#include <include_webots\lidar_point.h>
+#include <include_webots\lidar.h>
+#include <include_webots\light_sensor.h>
+#include <include_webots\microphone.h>
+#include <include_webots\motor.h>
+#include <include_webots\mouse_state.h>
+#include <include_webots\mouse.h>
+#include <include_webots\nodes.h>
+#include <include_webots\position_sensor.h>
+#include <include_webots\pen.h>
+#include <include_webots\radar_target.h>
+#include <include_webots\radar.h>
+#include <include_webots\radio.h>
+#include <include_webots\range_finder.h>
+#include <include_webots\receiver.h>
+#include <include_webots\remote_control.h>
+#include <include_webots\robot_window.h>
+#include <include_webots\robot_wwi.h>
+#include <include_webots\robot.h>
+#include <include_webots\skin.h>
+#include <include_webots\speaker.h>
+#include <include_webots\supervisor.h>
+#include <include_webots\touch_sensor.h>
+#include <include_webots\types.h>
+
 #include <stdio.h>
 #include <math.h>
 

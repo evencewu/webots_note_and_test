@@ -4,6 +4,7 @@
         "sensor.h": "c",
         "control.h": "c",
         "typeinfo": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "skin.h": "c"
     }
 }
